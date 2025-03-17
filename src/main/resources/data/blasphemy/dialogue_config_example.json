@@ -1,0 +1,87 @@
+{
+  "dialogueConfig": {
+    "id": "village_chief",
+    "nameKey": "npc.blasphemy.village_chief",
+    "startDialogue": "greeting",
+    "quests": ["kill_mobs_quest"]
+  },
+  
+  "dialogues": {
+    "greeting": {
+      "text": "dialogue.blasphemy.village_chief.greeting",
+      "options": [
+        {
+          "textKey": "dialogue.option.blasphemy.whats_in_it",
+          "next": "quest_details"
+        },
+        {
+          "textKey": "dialogue.option.blasphemy.sure",
+          "questAction": "ACCEPT",
+          "questId": "kill_mobs_quest",
+          "next": "quest_accepted"
+        },
+        {
+          "textKey": "dialogue.option.blasphemy.no",
+          "questAction": "DECLINE",
+          "next": "end"
+        }
+      ]
+    },
+    "quest_details": {
+      "text": "dialogue.blasphemy.village_chief.quest_details",
+      "options": [
+        {
+          "textKey": "dialogue.option.blasphemy.accept_quest",
+          "questAction": "ACCEPT",
+          "questId": "kill_mobs_quest",
+          "next": "quest_accepted"
+        },
+        {
+          "textKey": "dialogue.option.blasphemy.decline_quest",
+          "questAction": "DECLINE",
+          "next": "end"
+        },
+        {
+          "textKey": "dialogue.option.blasphemy.not_yet", 
+          "next": "greeting"
+        }
+      ]
+    },
+    "quest_accepted": {
+      "text": "dialogue.blasphemy.village_chief.quest_accepted",
+      "options": [
+        {
+          "textKey": "dialogue.option.blasphemy.goodbye",
+          "action": "END"
+        }
+      ]
+    },
+    "end": {
+      "text": "dialogue.ended",
+      "options": []
+    }
+  },
+  
+  "questConfig": {
+    "kill_mobs_quest": {
+      "id": "kill_mobs_quest",
+      "nameKey": "quest.blasphemy.kill_mobs.name",
+      "descriptionKey": "quest.blasphemy.kill_mobs.description",
+      "objectiveKey": "quest.blasphemy.kill_mobs.objective",
+      "type": "KILL",
+      "targetId": "minecraft:hostile",
+      "targetAmount": 30,
+      "rewards": [
+        {
+          "type": "ITEM",
+          "itemId": "minecraft:diamond",
+          "amount": 5
+        },
+        {
+          "type": "XP",
+          "amount": 1000
+        }
+      ]
+    }
+  }
+} 

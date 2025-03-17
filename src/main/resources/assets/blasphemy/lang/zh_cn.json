@@ -1,0 +1,65 @@
+{
+  "itemGroup.blasphemy.main": "亵渎",
+  "itemGroup.blasphemy.item_group": "亵渎",
+  
+  "item.blasphemy.seraphim_sword": "炽天使之剑",
+  "item.blasphemy.seraphim_sword.tooltip": "§6神圣之光保护持有者。\n§e右键：释放神圣冲击波，推开5格内生物并造成伤害\n§b技能释放时会有美丽的光环粒子效果\n§c对亡灵生物造成额外30%伤害",
+  
+  "item.blasphemy.rapids_sword": "激流之剑",
+  "item.blasphemy.rapids_sword.tooltip": "§9如流水般迅捷。",
+  
+  "item.blasphemy.muramasa_sword": "村正",
+  "item.blasphemy.muramasa_sword.tooltip": "§4嗜血的刀刃，可穿透护甲。",
+  
+  "item.blasphemy.npc_spawn_egg": "NPC生成蛋",
+  
+  "message.blasphemy.seraphim_sword.use": "炽天使之光已释放！",
+  "message.blasphemy.seraphim_sword.cooldown": "技能冷却中：剩余%d秒",
+  "message.blasphemy.seraphim_sword.undead_bonus": "神圣之力！对亡灵额外造成 §6%s §e点伤害！",
+  
+  "enchantment.blasphemy.cleave": "群体斩击",
+  "enchantment.blasphemy.cleave.desc": "攻击时对目标周围敌对生物造成额外伤害",
+  "message.blasphemy.cleave.activate": "§c群体斩击！波及了%d个敌人！",
+  
+  "dialogue.ended": "对话结束",
+  "dialogue.quest.accepted": "已接受任务",
+  "dialogue.quest.declined": "已拒绝任务",
+  "quest.already.accepted": "你已经接受了这个任务",
+  "quest.accepted": "已接受任务：%s",
+  "quest.objective": "任务目标：%s",
+  "quest.completed": "已完成任务：%s",
+  
+  "npc.blasphemy.village_chief": "村长",
+  "dialogue.blasphemy.village_chief.greeting": "你好冒险者，我是村长。我需要你去消灭30只怪物。你接受吗？",
+  "dialogue.blasphemy.village_chief.quest_details": "我会给你5颗钻石和一些经验作为奖励。这对你有什么好处？完成任务后你将成为我们村的英雄！",
+  "dialogue.blasphemy.village_chief.quest_accepted": "谢谢你接受任务！村子里的人会感激你的。",
+  
+  "dialogue.option.blasphemy.whats_in_it": "对我有什么好处？",
+  "dialogue.option.blasphemy.sure": "当然，我愿意",
+  "dialogue.option.blasphemy.no": "不，我拒绝",
+  "dialogue.option.blasphemy.not_yet": "现在不行",
+  "dialogue.option.blasphemy.accept_quest": "我接受任务",
+  "dialogue.option.blasphemy.decline_quest": "我拒绝任务",
+  "dialogue.option.blasphemy.goodbye": "再见",
+  
+  "quest.blasphemy.kill_mobs.name": "清理村庄周围的怪物",
+  "quest.blasphemy.kill_mobs.description": "村长请求你帮助清理村庄周围的怪物，以保障村民的安全。",
+  "quest.blasphemy.kill_mobs.objective": "击杀30只怪物",
+  
+  "quest.kill_mobs_quest.name": "清理村庄周围的怪物",
+  "quest.kill_mobs_quest.description": "村长需要你帮助清理村庄周围的怪物，使村民可以安全地外出。",
+  "quest.kill_mobs_quest.objective": "击杀30个怪物",
+  
+  "quest.center.title": "任务中心",
+  "quest.center.no_quests": "当前没有活动任务",
+  "quest.center.from_npc": "来自 %s",
+  "quest.center.status.completed": "已完成",
+  "quest.center.status.in_progress": "进行中",
+  
+  "quest.tracker.title": "活动任务",
+  
+  "dialogue.options.hint": "你的回应：",
+  
+  "key.blasphemy.quest_center": "打开任务中心",
+  "category.blasphemy.keys": "神秘模组"
+}
