@@ -2,47 +2,26 @@
   "itemGroup.blasphemy.main": "Blasphemy",
   "itemGroup.blasphemy.item_group": "Blasphemy",
   
-  "item.blasphemy.seraphim_sword": "Seraphim Sword",
-  "item.blasphemy.seraphim_sword.tooltip": "§6Divine light protects the wielder.\n§eRight-click: Release holy shockwave, push away creatures within 5 blocks and deal damage\n§bSkill creates beautiful halo particle effects\n§cDeals additional 30% damage to undead",
+  "item.blasphemy.seraphim_sword": "Seraphim",
+  "item.blasphemy.seraphim_sword.tooltip": "§7Seraphim is a holy weapon,\n§7dealing extra damage to undead creatures,\n§7and has a group knockback and damage skill.",
   
   "item.blasphemy.rapids_sword": "Rapids Sword",
-  "item.blasphemy.rapids_sword.tooltip": "§9Swift as flowing water.",
+  "item.blasphemy.rapids_sword.tooltip": "§7The Rapids Sword is a weapon known for its speed,\n§7it attacks faster than regular swords,\n§7and has an execution effect on low health targets.",
   
   "item.blasphemy.muramasa_sword": "Muramasa",
-  "item.blasphemy.muramasa_sword.tooltip": "§4Bloodthirsty blade that cuts through armor.",
+  "item.blasphemy.muramasa_sword.tooltip": "§7Muramasa is a weapon known for its damage,\n§7it has higher base damage than regular swords,\n§7and deals extra damage to high armor targets.",
+    
+  "message.blasphemy.seraphim_sword.use": "§eSeraphim released holy power!",
+  "message.blasphemy.seraphim_sword.cooldown": "§cSeraphim needs to cool down for %d seconds",
+  "message.blasphemy.seraphim_sword.undead_bonus": "§eSeraphim dealt extra damage to undead!",
   
-  "item.blasphemy.npc_spawn_egg": "NPC Spawn Egg",
-  
-  "message.blasphemy.seraphim_sword.use": "Seraphim Light Released!",
-  "message.blasphemy.seraphim_sword.cooldown": "Skill on cooldown: %d seconds remaining",
-  "message.blasphemy.seraphim_sword.undead_bonus": "Holy power! Dealt §6%s §eextra damage to undead!",
+  "message.blasphemy.portal.invalid_block": "§cThis block cannot be used to build a Nether portal!",
+  "message.blasphemy.portal.invalid_item": "§cYou cannot use this item to ignite a Nether portal!",
   
   "enchantment.blasphemy.cleave": "Cleave",
-  "enchantment.blasphemy.cleave.desc": "Attacks hit enemies around your target",
+  "enchantment.blasphemy.cleave.desc": "§7Attacks multiple targets at once,\n§7damage increases with level.",
   "message.blasphemy.cleave.activate": "§cCleave! Struck %d nearby enemies!",
   
-  "dialogue.ended": "Dialogue ended",
-  "dialogue.quest.accepted": "Quest accepted",
-  "dialogue.quest.declined": "Quest declined",
-  "quest.already.accepted": "You've already accepted this quest",
-  "quest.accepted": "Quest accepted: %s",
-  "quest.objective": "Objective: %s",
-  "quest.completed": "Quest completed: %s",
-  
-  "npc.blasphemy.village_chief": "Village Chief",
-  "dialogue.blasphemy.village_chief.greeting": "Hello adventurer, I am Lenard, the village chief. I need you to subjugate 30 mobs surrounding this village. Will you accept?",
-  "dialogue.blasphemy.village_chief.quest_details": "I will reward you with 5 diamonds and some experience. What's in it for you? You will be considered a hero in our village after completing this task!",
-  "dialogue.blasphemy.village_chief.quest_accepted": "Thank you for accepting the quest! The villagers will be grateful.",
-  
-  "dialogue.option.blasphemy.whats_in_it": "What's in it for me?",
-  "dialogue.option.blasphemy.sure": "Sure",
-  "dialogue.option.blasphemy.no": "No",
-  "dialogue.option.blasphemy.not_yet": "Not yet",
-  "dialogue.option.blasphemy.accept_quest": "I accept the quest",
-  "dialogue.option.blasphemy.decline_quest": "I decline the quest",
-  "dialogue.option.blasphemy.goodbye": "Goodbye",
-  
-  "quest.blasphemy.kill_mobs.name": "Clear Mobs Around the Village",
-  "quest.blasphemy.kill_mobs.description": "The village chief has requested your help to clear the mobs surrounding the village to ensure the safety of the villagers.",
-  "quest.blasphemy.kill_mobs.objective": "Kill 30 mobs"
+  "key.blasphemy.quest_center": "Open Quest Center",
+  "category.blasphemy.keys": "Blasphemy"
 } 

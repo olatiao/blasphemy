@@ -2,16 +2,16 @@
 	"schemaVersion": 1,
 	"id": "blasphemy",
 	"version": "${version}",
-	"name": "blasphemy",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Blasphemy",
+	"description": "A mod for the Blasphemy modpack",
 	"authors": [
-		"Me!"
+		"olatiao"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/olatiao/blasphemy",
+		"sources": "https://github.com/olatiao/blasphemy"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/blasphemy/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -23,30 +23,20 @@
 		],
 		"client": [
 			{
-				"value": "com.blasphemy.BlasphemyClient",
-				"adapter": "kotlin"
-			}
-		],
-		"fabric-datagen": [
-			{
-				"value": "com.blasphemy.BlasphemyDataGenerator",
+				"value": "com.blasphemy.client.BlasphemyClient",
 				"adapter": "kotlin"
 			}
 		]
 	},
 	"mixins": [
-		"blasphemy.mixins.json",
-		{
-			"config": "blasphemy.client.mixins.json",
-			"environment": "client"
-		}
+		"blasphemy.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.16.10",
+		"fabricloader": ">=0.14.21",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"fabric-api": "*",
-		"fabric-language-kotlin": "*"
+		"fabric-language-kotlin": ">=1.9.5"
 	},
 	"suggests": {
 		"another-mod": "*"
