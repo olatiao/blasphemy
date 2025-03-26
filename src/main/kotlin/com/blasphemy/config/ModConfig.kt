@@ -139,6 +139,7 @@ object ModConfig {
     /** 传送门提示语配置数据类 */
     data class PortalMessages(
             val invalidBlock: String = "message.blasphemy.portal.invalid_block", // 使用错误方块时的提示
-            val invalidItem: String = "message.blasphemy.portal.invalid_item" // 使用错误物品时的提示
+            val invalidItem: String = "message.blasphemy.portal.invalid_item", // 使用错误物品时的提示
+            val portalCreated: String = "message.blasphemy.portal.created" // 传送门创建成功时的提示
     )
 }

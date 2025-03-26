@@ -1,6 +1,7 @@
 package com.blasphemy.registry
 
 import com.blasphemy.Blasphemy
+import com.blasphemy.portal.PortalDebugTool
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup
 import net.minecraft.item.ItemGroup
 import net.minecraft.item.ItemStack
@@ -23,6 +24,11 @@ object ItemGroupRegistry {
             entries.add(ItemRegistry.SERAPHIM_SWORD)
             entries.add(ItemRegistry.RAPIDS_SWORD)
             entries.add(ItemRegistry.MURAMASA_SWORD)
+            
+            // 添加传送门调试工具
+            val debugToolId = Identifier(Blasphemy.MOD_ID, "portal_debug_tool")
+            val debugTool = Registries.ITEM.get(debugToolId)
+            entries.add(debugTool)
             
             // 未来可以在这里添加更多物品
         }

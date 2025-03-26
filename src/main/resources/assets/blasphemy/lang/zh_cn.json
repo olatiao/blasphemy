@@ -1,27 +1,31 @@
 {
   "itemGroup.blasphemy.main": "亵渎",
   "itemGroup.blasphemy.item_group": "亵渎",
-  
+
   "item.blasphemy.seraphim_sword": "炽天使",
   "item.blasphemy.seraphim_sword.tooltip": "§7炽天使是一把神圣的武器，\n§7对亡灵生物造成额外伤害，\n§7并且具有群体推退和伤害技能。",
-  
+
   "item.blasphemy.rapids_sword": "激流之剑",
   "item.blasphemy.rapids_sword.tooltip": "§7激流之剑是一把以速度见长的武器，\n§7它的攻击速度比普通剑更快，\n§7并且对低血量目标有斩杀效果。",
-  
+
   "item.blasphemy.muramasa_sword": "妖刀村正",
   "item.blasphemy.muramasa_sword.tooltip": "§7妖刀村正是一把以伤害见长的武器，\n§7它的基础伤害比普通剑更高，\n§7并且对高护甲目标有额外伤害。",
-  
+
+  "item.blasphemy.portal_debug_tool": "传送门调试棒",
+
   "message.blasphemy.seraphim_sword.use": "§e炽天使释放了神圣之力！",
   "message.blasphemy.seraphim_sword.cooldown": "§c炽天使需要冷却 %d 秒",
   "message.blasphemy.seraphim_sword.undead_bonus": "§e炽天使对亡灵造成了额外伤害！",
 
-  "message.blasphemy.portal.invalid_block": "§c这个方块不能用来建造地狱传送门！",
-  "message.blasphemy.portal.invalid_item": "§c你不能使用这个物品来开启地狱传送门！",
-  
+  "message.blasphemy.portal.invalid_block": "传送门框架含有无效方块",
+  "message.blasphemy.portal.invalid_item": "此物品无法激活传送门",
+  "message.blasphemy.portal.invalid_portal": "未找到有效的传送门框架",
+  "message.blasphemy.portal.created": "§a成功创建了下界传送门！",
+
   "enchantment.blasphemy.cleave": "群体斩击",
-  "enchantment.blasphemy.cleave.desc": "攻击时对目标周围敌对生物造成额外伤害",
+  "enchantment.blasphemy.cleave.desc": "攻击时可同时伤害周围敌人",
   "message.blasphemy.cleave.activate": "§c群体斩击！波及了%d个敌人！",
-  
+
   "key.blasphemy.quest_center": "打开任务中心",
   "category.blasphemy.keys": "亵渎"
 }

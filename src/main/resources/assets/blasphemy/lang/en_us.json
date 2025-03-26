@@ -17,6 +17,7 @@
   
   "message.blasphemy.portal.invalid_block": "§cThis block cannot be used to build a Nether portal!",
   "message.blasphemy.portal.invalid_item": "§cYou cannot use this item to ignite a Nether portal!",
+  "message.blasphemy.portal.created": "§aYou have successfully created a Nether portal!",
   
   "enchantment.blasphemy.cleave": "Cleave",
   "enchantment.blasphemy.cleave.desc": "§7Attacks multiple targets at once,\n§7damage increases with level.",

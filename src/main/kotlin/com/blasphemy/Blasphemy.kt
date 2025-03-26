@@ -2,9 +2,12 @@ package com.blasphemy
 
 import com.blasphemy.compat.LeylinesCompat
 import com.blasphemy.config.ModConfig
+import com.blasphemy.portal.PortalDebugTool
+import com.blasphemy.portal.PortalFrameValidator
 import com.blasphemy.registry.EnchantmentRegistry
 import com.blasphemy.registry.ItemGroupRegistry
 import com.blasphemy.registry.ItemRegistry
+import com.blasphemy.util.BlockEventListener
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import org.slf4j.LoggerFactory
@@ -37,6 +40,12 @@ class Blasphemy : ModInitializer {
         // 注册物品和武器
         ItemRegistry.register()
 
+        // 初始化传送门框架验证器
+        PortalFrameValidator.init()
+
+        // 注册传送门调试工具
+        PortalDebugTool.register()
+
         // 注册物品组
         ItemGroupRegistry.register()
 
@@ -45,6 +54,9 @@ class Blasphemy : ModInitializer {
             logger.info("检测到莱特兰模组，正在加载兼容...")
             LeylinesCompat.init()
         }
+
+        // 初始化方块事件监听器
+        BlockEventListener.init()
 
         logger.info("武器和附魔模组初始化完成！")
     }
