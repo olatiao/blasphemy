@@ -17,32 +17,33 @@ import java.util.List;
  * 负责加载和保存模组配置
  */
 public class ModConfig {
-    
+
     private static ModConfig instance;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("blasphemy.json").toFile();
-    
+    private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("blasphemy.json")
+            .toFile();
+
     // 炽天使配置
     public SeraphimSwordConfig seraphimSword = new SeraphimSwordConfig();
-    
+
     // 激流之剑配置
     public RapidsSwordConfig rapidsSword = new RapidsSwordConfig();
-    
+
     // 妖刀村正配置
     public MuramasaSwordConfig muramasaSword = new MuramasaSwordConfig();
-    
+
     // 群体斩击附魔配置
     public CleaveConfig cleaveConfig = new CleaveConfig();
-    
+
     // 传送门配置
     public PortalConfig portalConfig = new PortalConfig();
-    
+
     /**
      * 加载配置
      */
     public static void load() {
         Blasphemy.LOGGER.info("加载配置文件...");
-        
+
         // 如果配置文件不存在，创建默认配置
         if (!CONFIG_FILE.exists()) {
             instance = new ModConfig();
@@ -50,7 +51,7 @@ public class ModConfig {
             Blasphemy.LOGGER.info("创建默认配置文件");
             return;
         }
-        
+
         // 读取配置文件
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
             instance = GSON.fromJson(reader, ModConfig.class);
@@ -60,7 +61,7 @@ public class ModConfig {
             instance = new ModConfig();
         }
     }
-    
+
     /**
      * 保存配置
      */
@@ -72,7 +73,7 @@ public class ModConfig {
             Blasphemy.LOGGER.error("保存配置文件失败", e);
         }
     }
-    
+
     /**
      * 获取配置实例
      */
@@ -82,7 +83,7 @@ public class ModConfig {
         }
         return instance;
     }
-    
+
     /**
      * 炽天使配置类
      */
@@ -97,7 +98,7 @@ public class ModConfig {
         public float undeadDamageMultiplier = 0.3f;
         public List<String> undeadEntityTags = Arrays.asList("minecraft:undead", "forge:undead", "c:undead");
     }
-    
+
     /**
      * 激流之剑配置类
      */
@@ -108,7 +109,7 @@ public class ModConfig {
         public float executionThreshold = 0.2f;
         public float executionChance = 0.3f;
     }
-    
+
     /**
      * 妖刀村正配置类
      */
@@ -120,7 +121,7 @@ public class ModConfig {
         public float executionChance = 0.3f;
         public float armorThreshold = 10.0f;
     }
-    
+
     /**
      * 群体斩击附魔配置类
      */
@@ -130,17 +131,17 @@ public class ModConfig {
         public float levelMultiplier = 0.05f;
         public int maxLevel = 5;
     }
-    
+
     /**
      * 传送门配置类
      */
     public static class PortalConfig {
         public boolean enabled = true;
-        public boolean supportVanillaItems = true;
-        public List<String> portalBlocks = Arrays.asList("minecraft:crying_obsidian", "minecraft:diamond_block");
-        public String ignitionItem = "minecraft:heart_of_the_sea";
+        public boolean supportVanillaItems = false;
+        public List<String> portalBlocks = Arrays.asList("soulsweapons:crimson_obsidian");
+        public String ignitionItem = "minecraft:nether_star";
         public PortalMessages messages = new PortalMessages();
-        
+
         public static class PortalMessages {
             public String invalidBlock = "message.blasphemy.portal.invalid_block";
             public String invalidItem = "message.blasphemy.portal.invalid_item";

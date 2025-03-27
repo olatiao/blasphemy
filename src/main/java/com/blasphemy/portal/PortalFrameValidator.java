@@ -150,7 +150,32 @@ public class PortalFrameValidator {
         }
 
         BlockState state = world.getBlockState(pos);
-        return validFrameBlocks.contains(state.getBlock());
+        Block block = state.getBlock();
+
+        // 1. 检查是否在配置的有效框架方块列表中
+        if (validFrameBlocks.contains(block)) {
+            return true;
+        }
+
+        // 2. 如果启用了原版支持，且配置中不包含黑曜石，仍然需要禁止黑曜石作为框架方块
+        if (ModConfig.getConfig().portalConfig.supportVanillaItems) {
+            // 检查配置中是否包含黑曜石
+            boolean obsidianInConfig = false;
+            for (Block validBlock : validFrameBlocks) {
+                if (validBlock == Blocks.OBSIDIAN) {
+                    obsidianInConfig = true;
+                    break;
+                }
+            }
+
+            // 如果配置中不包含黑曜石，则黑曜石不是有效框架方块
+            if (block == Blocks.OBSIDIAN && !obsidianInConfig) {
+                Blasphemy.LOGGER.debug("黑曜石方块检查：不在配置列表中，不是有效框架方块");
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -170,7 +195,20 @@ public class PortalFrameValidator {
         Blasphemy.LOGGER.info("======== 传送门点燃尝试 ========");
         Blasphemy.LOGGER.info("玩家 {} 尝试在 {} 点燃传送门", player.getName().getString(), pos);
         Blasphemy.LOGGER.info("使用物品: {}", context.getStack().getItem().getName().getString());
-        Blasphemy.LOGGER.info("点击方块: {}", world.getBlockState(pos).getBlock().getName().getString());
+
+        // 记录点击的方块类型
+        BlockState blockState = world.getBlockState(pos);
+        Block clickedBlock = blockState.getBlock();
+        Blasphemy.LOGGER.info("点击方块: {}", clickedBlock.getName().getString());
+
+        // 首先检查点击的方块是否是有效的框架方块
+        if (!isValidFrameBlock(world, pos)) {
+            String invalidBlockMsg = ModConfig.getConfig().portalConfig.messages.invalidBlock;
+            player.sendMessage(Text.translatable(invalidBlockMsg).formatted(Formatting.RED), true);
+            Blasphemy.LOGGER.info("点火失败：点击的不是有效的框架方块 {}", blockState.getBlock().getName().getString());
+            return false;
+        }
+
         Blasphemy.LOGGER.info("配置状态: enabled={}, supportVanillaItems={}, configItem={}",
                 ModConfig.getConfig().portalConfig.enabled,
                 ModConfig.getConfig().portalConfig.supportVanillaItems,
@@ -181,7 +219,8 @@ public class PortalFrameValidator {
         if (!isValidIgnitionItem(stack)) {
             Blasphemy.LOGGER.info("点火失败：不是有效的点火物品");
             if (player != null) {
-                player.sendMessage(Text.literal("这个物品不能点燃传送门").formatted(Formatting.RED), true);
+                String invalidItemMsg = ModConfig.getConfig().portalConfig.messages.invalidItem;
+                player.sendMessage(Text.translatable(invalidItemMsg).formatted(Formatting.RED), true);
             }
             return false;
         }
@@ -364,92 +403,92 @@ public class PortalFrameValidator {
                 foundPortal = false;
                 return;
             }
-            
+
             // 计算宽度
             width = 0;
-            while (width < MAX_PORTAL_WIDTH && isValidFrameBlock(world, corner.offset(rightDir, width+1))) {
+            while (width < MAX_PORTAL_WIDTH && isValidFrameBlock(world, corner.offset(rightDir, width + 1))) {
                 width++;
             }
-            
+
             if (width < MIN_PORTAL_WIDTH - 1) { // 最小宽度
-                Blasphemy.LOGGER.info("传送门计算：宽度太小，宽度={}", width+1);
+                Blasphemy.LOGGER.info("传送门计算：宽度太小，宽度={}", width + 1);
                 foundPortal = false;
                 return;
             }
-            
+
             // 计算高度
             height = 0;
-            while (height < MAX_PORTAL_HEIGHT && isValidFrameBlock(world, corner.offset(downDir, height+1))) {
+            while (height < MAX_PORTAL_HEIGHT && isValidFrameBlock(world, corner.offset(downDir, height + 1))) {
                 height++;
             }
-            
+
             if (height < MIN_PORTAL_HEIGHT - 1) { // 最小高度
-                Blasphemy.LOGGER.info("传送门计算：高度太小，高度={}", height+1);
+                Blasphemy.LOGGER.info("传送门计算：高度太小，高度={}", height + 1);
                 foundPortal = false;
                 return;
             }
-            
-            Blasphemy.LOGGER.info("传送门计算：初始大小 {}x{}", width+1, height+1);
-            
+
+            Blasphemy.LOGGER.info("传送门计算：初始大小 {}x{}", width + 1, height + 1);
+
             // 收集帧方块并验证
             if (!collectFrameBlocks()) {
                 Blasphemy.LOGGER.info("传送门计算：收集框架方块失败");
                 foundPortal = false;
                 return;
             }
-            
+
             // 验证内部空间
             if (!validateInnerSpace()) {
                 Blasphemy.LOGGER.info("传送门计算：内部空间验证失败");
                 foundPortal = false;
                 return;
             }
-            
+
             // 传送门大小正确
             width += 1; // 转换为实际宽度
             height += 1; // 转换为实际高度
             foundPortal = true;
-            
+
             Blasphemy.LOGGER.info("传送门计算：成功，大小={}x{}", width, height);
         }
-        
+
         /**
          * 收集框架方块
          */
         private boolean collectFrameBlocks() {
             frameBlocks.clear();
-            
+
             // 检查四个角落
             BlockPos tlCorner = corner;
             BlockPos trCorner = corner.offset(rightDir, width);
             BlockPos blCorner = corner.offset(downDir, height);
             BlockPos brCorner = corner.offset(rightDir, width).offset(downDir, height);
-            
+
             // 所有角落必须是有效框架方块
             if (!isValidFrameBlock(world, tlCorner)) {
                 Blasphemy.LOGGER.info("传送门计算：左上角框架缺失");
                 return false;
             }
             frameBlocks.add(tlCorner);
-            
+
             if (!isValidFrameBlock(world, trCorner)) {
                 Blasphemy.LOGGER.info("传送门计算：右上角框架缺失");
                 return false;
             }
             frameBlocks.add(trCorner);
-            
+
             if (!isValidFrameBlock(world, blCorner)) {
                 Blasphemy.LOGGER.info("传送门计算：左下角框架缺失");
                 return false;
             }
             frameBlocks.add(blCorner);
-            
+
             if (!isValidFrameBlock(world, brCorner)) {
                 Blasphemy.LOGGER.info("传送门计算：右下角框架缺失");
                 return false;
             }
             frameBlocks.add(brCorner);
-            
+
             // 处理底部边缘（除角落外）
             for (int w = 1; w < width; w++) {
                 BlockPos bottomPos = corner.offset(rightDir, w).offset(downDir, height);
@@ -459,7 +498,7 @@ public class PortalFrameValidator {
                 }
                 frameBlocks.add(bottomPos);
             }
-            
+
             // 处理顶部边缘（除角落外）
             for (int w = 1; w < width; w++) {
                 BlockPos topPos = corner.offset(rightDir, w);
@@ -469,7 +508,7 @@ public class PortalFrameValidator {
                 }
                 frameBlocks.add(topPos);
             }
-            
+
             // 处理左边边缘（除角落外）
             for (int h = 1; h < height; h++) {
                 BlockPos leftPos = corner.offset(downDir, h);
@@ -479,7 +518,7 @@ public class PortalFrameValidator {
                 }
                 frameBlocks.add(leftPos);
             }
-            
+
             // 处理右边边缘（除角落外）
             for (int h = 1; h < height; h++) {
                 BlockPos rightPos = corner.offset(rightDir, width).offset(downDir, h);
@@ -489,7 +528,7 @@ public class PortalFrameValidator {
                 }
                 frameBlocks.add(rightPos);
             }
-            
+
             Blasphemy.LOGGER.info("传送门计算：框架方块总数={}", frameBlocks.size());
             return true; // 所有边缘检查通过
         }
@@ -534,11 +573,11 @@ public class PortalFrameValidator {
          * 传送门大小是否有效
          */
         public boolean isValid() {
-            return foundPortal && 
-                   width >= MIN_PORTAL_WIDTH && 
-                   height >= MIN_PORTAL_HEIGHT &&
-                   width <= MAX_PORTAL_WIDTH && 
-                   height <= MAX_PORTAL_HEIGHT;
+            return foundPortal &&
+                    width >= MIN_PORTAL_WIDTH &&
+                    height >= MIN_PORTAL_HEIGHT &&
+                    width <= MAX_PORTAL_WIDTH &&
+                    height <= MAX_PORTAL_HEIGHT;
         }
     }
 

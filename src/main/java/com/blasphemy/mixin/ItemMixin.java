@@ -62,30 +62,24 @@ public class ItemMixin {
         Blasphemy.LOGGER.info("使用物品: {}, 配置物品: {}, 匹配: {}",
             currentItem.getName().getString(), configuredItem, isConfiguredItem);
         
-        // 检查是否点击的是黑曜石或有效框架方块
+        // 获取点击的方块信息
         BlockPos blockPos = context.getBlockPos();
         BlockState blockState = context.getWorld().getBlockState(blockPos);
         
-        if (blockState.getBlock() == Blocks.OBSIDIAN || 
-            PortalFrameValidator.isValidFrameBlock(context.getWorld(), blockPos)) {
-            
-            // 记录点击的方块信息
-            Blasphemy.LOGGER.info("点击的方块: {}, 位置: {}", 
-                blockState.getBlock().getName().getString(), blockPos);
-            
-            // 尝试使用自定义规则点燃传送门
-            Blasphemy.LOGGER.info("尝试使用自定义物品点燃传送门");
-            
-            boolean result = PortalFrameValidator.tryIgnitePortal(context);
-            if (result) {
-                Blasphemy.LOGGER.info("传送门成功点燃！阻止原版点火方法执行");
-                // 如果成功点燃，阻止原版代码执行
-                cir.setReturnValue(ActionResult.success(true));
-            } else {
-                Blasphemy.LOGGER.info("自定义传送门点燃失败");
-            }
+        // 记录点击的方块信息
+        Blasphemy.LOGGER.info("点击的方块: {}, 位置: {}", 
+            blockState.getBlock().getName().getString(), blockPos);
+        
+        // 尝试使用自定义规则点燃传送门 (让传送门验证器决定方块是否有效)
+        Blasphemy.LOGGER.info("尝试使用自定义物品点燃传送门");
+        
+        boolean result = PortalFrameValidator.tryIgnitePortal(context);
+        if (result) {
+            Blasphemy.LOGGER.info("传送门成功点燃！阻止原版点火方法执行");
+            // 如果成功点燃，阻止原版代码执行
+            cir.setReturnValue(ActionResult.success(true));
         } else {
-            Blasphemy.LOGGER.info("点击的不是有效的框架方块: {}", blockState.getBlock().getName().getString());
+            Blasphemy.LOGGER.info("自定义传送门点燃失败");
         }
     }
 } 
