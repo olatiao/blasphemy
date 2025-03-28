@@ -26,37 +26,45 @@ public class PortalMixin {
     @Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
     private void onUseFlintAndSteel(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         Blasphemy.LOGGER.info("打火石使用事件被拦截，开始检查传送门点燃条件");
-        
+
         // 检查是否启用传送门功能
         if (!ModConfig.getConfig().portalConfig.enabled) {
             Blasphemy.LOGGER.info("自定义传送门功能未启用，跳过处理");
             return;
         }
-        
+
         // 检查使用的点火方块
         BlockPos blockPos = context.getBlockPos();
         BlockState blockState = context.getWorld().getBlockState(blockPos);
-        
+
         // 记录点击的方块信息
-        Blasphemy.LOGGER.info("点击的方块: {}, 位置: {}", 
-            blockState.getBlock().getName().getString(), blockPos);
-        
+        Blasphemy.LOGGER.info("点击的方块: {}, 位置: {}",
+                blockState.getBlock().getName().getString(), blockPos);
+
         // 检查是否支持原版打火石
         boolean supportVanillaItems = ModConfig.getConfig().portalConfig.supportVanillaItems;
-        
+
         // 如果不支持原版打火石，且使用的是打火石，且配置的点火物品不是打火石，阻止使用
         boolean isFlintAndSteel = context.getStack().getItem() instanceof FlintAndSteelItem;
         boolean isConfigItem = PortalFrameValidator.isValidIgnitionItem(context.getStack());
-        
-        Blasphemy.LOGGER.info("物品检查：isFlintAndSteel={}, isConfigItem={}, configItem={}, supportVanilla={}", 
-            isFlintAndSteel, isConfigItem, ModConfig.getConfig().portalConfig.ignitionItem, supportVanillaItems);
-        
+
+        Blasphemy.LOGGER.info("物品检查：isFlintAndSteel={}, isConfigItem={}, configItem={}, supportVanilla={}",
+                isFlintAndSteel, isConfigItem, ModConfig.getConfig().portalConfig.ignitionItem, supportVanillaItems);
+
         // 如果不支持原版物品，且是使用打火石，但打火石不是配置的点火物品，阻止继续
         if (!supportVanillaItems && isFlintAndSteel && !isConfigItem) {
             Blasphemy.LOGGER.info("禁用原版打火石点燃传送门");
+            cir.setReturnValue(ActionResult.PASS);
             return;
         }
-        
+        // 如果方块是黑曜石且配置中不存在黑曜石，阻止继续
+        if (blockState.getBlock() == Blocks.OBSIDIAN
+                && !ModConfig.getConfig().portalConfig.portalBlocks.contains("minecraft:obsidian")) {
+            Blasphemy.LOGGER.info("阻止在黑曜石上使用打火石点燃原版传送门");
+            cir.setReturnValue(ActionResult.PASS);
+            return;
+        }
+
         // 尝试使用自定义规则点燃传送门
         if (PortalFrameValidator.tryIgnitePortal(context)) {
             Blasphemy.LOGGER.info("传送门成功点燃！阻止原版点火方法执行");
@@ -64,17 +72,13 @@ public class PortalMixin {
             cir.setReturnValue(ActionResult.success(true));
         } else {
             Blasphemy.LOGGER.info("自定义传送门点燃失败");
-            
+
             // 如果是黑曜石并且配置中不允许黑曜石，阻止原版点火
             if (blockState.getBlock() == Blocks.OBSIDIAN) {
-                boolean obsidianAllowed = false;
-                for (String blockId : ModConfig.getConfig().portalConfig.portalBlocks) {
-                    if (blockId.equals("minecraft:obsidian")) {
-                        obsidianAllowed = true;
-                        break;
-                    }
-                }
-                
+                // 是否允许黑曜石
+                boolean obsidianAllowed = ModConfig.getConfig().portalConfig.portalBlocks
+                        .contains("minecraft:obsidian");
+                // 如果配置中不允许黑曜石，阻止原版点火
                 if (!obsidianAllowed) {
                     Blasphemy.LOGGER.info("阻止在黑曜石上使用打火石点燃原版传送门");
                     cir.setReturnValue(ActionResult.PASS);
@@ -82,4 +86,4 @@ public class PortalMixin {
             }
         }
     }
-} 
+}

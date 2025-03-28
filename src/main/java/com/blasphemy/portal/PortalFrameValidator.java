@@ -35,63 +35,12 @@ public class PortalFrameValidator {
     public static final int MAX_PORTAL_WIDTH = 23; // 外框最大宽度
     public static final int MAX_PORTAL_HEIGHT = 23; // 外框最大高度
 
-    // 缓存有效的框架方块列表（从配置加载）
-    private static List<Block> validFrameBlocks = new ArrayList<>();
-    // 缓存点火物品（从配置加载）
-    private static Item ignitionItem = null;
-
     /**
      * 初始化验证器
      * 从配置中加载有效的框架方块
      */
     public static void init() {
         Blasphemy.LOGGER.info("初始化传送门框架验证器");
-        refreshValidFrameBlocks();
-    }
-
-    /**
-     * 刷新可用于框架的方块列表（从配置文件）
-     */
-    public static void refreshValidFrameBlocks() {
-        validFrameBlocks.clear();
-
-        // 加载配置中的框架方块
-        List<String> frameBlockIds = ModConfig.getConfig().portalConfig.portalBlocks;
-        Blasphemy.LOGGER.info("从配置中加载{}个传送门框架方块", frameBlockIds.size());
-
-        for (String blockId : frameBlockIds) {
-            try {
-                Identifier id = new Identifier(blockId);
-                Block block = Registries.BLOCK.get(id);
-
-                if (block != Blocks.AIR) {
-                    validFrameBlocks.add(block);
-                    Blasphemy.LOGGER.info("已加载传送门框架方块: {}", blockId);
-                } else {
-                    Blasphemy.LOGGER.warn("无法加载传送门框架方块: {} (方块不存在)", blockId);
-                }
-            } catch (Exception e) {
-                Blasphemy.LOGGER.error("加载传送门框架方块时出错: {}", blockId, e);
-            }
-        }
-
-        // 加载点火物品
-        String ignitionItemId = ModConfig.getConfig().portalConfig.ignitionItem;
-        try {
-            Identifier id = new Identifier(ignitionItemId);
-            ignitionItem = Registries.ITEM.get(id);
-            if (ignitionItem == null) {
-                Blasphemy.LOGGER.warn("无法加载传送门点火物品: {} (物品不存在)", ignitionItemId);
-                ignitionItem = null;
-            } else {
-                Blasphemy.LOGGER.info("已加载传送门点火物品: {}", ignitionItemId);
-            }
-        } catch (Exception e) {
-            Blasphemy.LOGGER.error("加载传送门点火物品时出错: {}", ignitionItemId, e);
-            ignitionItem = null;
-        }
-
-        Blasphemy.LOGGER.info("成功加载{}个传送门框架方块", validFrameBlocks.size());
     }
 
     /**
@@ -105,10 +54,11 @@ public class PortalFrameValidator {
 
         // 基本的匹配检查
         boolean isValid = false;
+        // 获取配置中的点火物品
         String configItemId = ModConfig.getConfig().portalConfig.ignitionItem;
 
         // 检查是否匹配配置中的物品
-        if (ignitionItem != null && stack.getItem() == ignitionItem) {
+        if (configItemId != null && stack.getItem() == Registries.ITEM.get(new Identifier(configItemId))) {
             Blasphemy.LOGGER.info("点火物品检查：物品 {} 匹配配置物品 {}",
                     stack.getItem().getName().getString(), configItemId);
             isValid = true;
@@ -149,27 +99,24 @@ public class PortalFrameValidator {
             return false;
         }
 
+        // 获取点击的方块
         BlockState state = world.getBlockState(pos);
+        // 获取方块
         Block block = state.getBlock();
+        // 获取方块id
+        String blockId = Registries.BLOCK.getId(block).toString();
+        // 获取配置文件中允许的框架方块
+        List<String> allowedBlocks = ModConfig.getConfig().portalConfig.portalBlocks;
 
-        // 1. 检查是否在配置的有效框架方块列表中
-        if (validFrameBlocks.contains(block)) {
+        // 检查是否在配置的有效框架方块列表中
+        if (allowedBlocks.contains(blockId)) {
+            Blasphemy.LOGGER.info("方块 {} 在配置列表中，是有效的框架方块", blockId);
             return true;
         }
 
-        // 2. 如果启用了原版支持，且配置中不包含黑曜石，仍然需要禁止黑曜石作为框架方块
-        if (ModConfig.getConfig().portalConfig.supportVanillaItems) {
-            // 检查配置中是否包含黑曜石
-            boolean obsidianInConfig = false;
-            for (Block validBlock : validFrameBlocks) {
-                if (validBlock == Blocks.OBSIDIAN) {
-                    obsidianInConfig = true;
-                    break;
-                }
-            }
-
-            // 如果配置中不包含黑曜石，则黑曜石不是有效框架方块
-            if (block == Blocks.OBSIDIAN && !obsidianInConfig) {
+        // 黑曜石特殊处理
+        if (block == Blocks.OBSIDIAN && !allowedBlocks.contains("minecraft:obsidian")) {
+            if (!ModConfig.getConfig().portalConfig.supportVanillaItems) {
                 Blasphemy.LOGGER.debug("黑曜石方块检查：不在配置列表中，不是有效框架方块");
                 return false;
             }
@@ -269,10 +216,9 @@ public class PortalFrameValidator {
 
         Blasphemy.LOGGER.info("开始验证传送门框架，位置：{}", pos);
 
-        // 如果点击位置不是框架方块，但是是黑曜石，我们也允许
-        BlockState clickedState = world.getBlockState(pos);
-        if (!isValidFrameBlock(world, pos) && clickedState.getBlock() != Blocks.OBSIDIAN) {
-            Blasphemy.LOGGER.info("点击的不是有效的框架方块：{}", clickedState.getBlock().getName().getString());
+        // 验证点击位置是否是有效的框架方块
+        if (!isValidFrameBlock(world, pos)) {
+            Blasphemy.LOGGER.info("点击的不是有效的框架方块");
             return null;
         }
 
